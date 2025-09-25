@@ -1,0 +1,41 @@
+.editor-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh; /* full page */
+}
+
+/* Top Toolbar */
+.editor-toolbar {
+  display: flex;
+  gap: 10px;
+  background: #2d2d2d;
+  color: white;
+  padding: 10px;
+}
+
+.editor-tool-view-container {
+  display: flex;
+  flex-direction: column;
+  flex: 3;
+}
+.editor-main {
+  display: flex;
+  flex: 1; /* take remaining space */
+}
+
+/* PDF Viewer takes most of the width */
+.pdf-viewer {
+  flex: 3;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Sidebar smaller on right */
+.editor-page-scroll-container {
+  flex: 1;
+  background: #e6e6e6;
+  padding: 15px;
+  border-left: 1px solid #ccc;
+}
