@@ -1,15 +1,39 @@
 import './Upload.css'
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import EditPdfPage from "./Edit";
+import * as pdfjsLib from "pdfjs-dist";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker?url";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
 
 function UploadPdf() {
     const [file, setFile] = useState(null);
-
-    const handleFileChange = (e) => {
+    const [fileId, setId] = useState(null);
+    const handleFileChange = async (e) => {
         const uploadedFile = e.target.files[0]; 
-
+        const formData = new FormData();
         if(uploadedFile && uploadedFile.type === "application/pdf") {
-            setFile(uploadedFile);
+            formData.append("file", uploadedFile);
+            setFile(uploadedFile);  
+
+            try{
+              const response = await fetch("http://localhost:8090/pdf/uploadpdf", {
+                method: "POST",
+                body: formData
+              });
+              
+              if (!response.ok) throw new Error("PDF failed to upload");
+              const data = await response.json();
+              if (data && data.fileId) {
+                   setId(data.fileId);
+              } 
+
+
+            }
+            catch(error) {
+              console.error(error)
+            }
         }
         else {
             alert("Please upload PDF file");
@@ -54,14 +78,12 @@ return (
         </div>
       ) : (
            <div>
-              <EditPdfPage />
+              <EditPdfPage FileId={fileId}/>
             </div>
-      )};
+      )}
     </div>
   );
 
 };
-
-
 
 export default UploadPdf;
